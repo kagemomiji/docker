@@ -21,10 +21,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: | 
-          echo "directory=$(gh pr view "${PR_NUMBER}" --json files -q '.files | map(.path | split ("/") | .[0] | select(startswith(".")|not)) | unique' )"
+          echo "directory=$(gh pr view "${PR_NUMBER}" --json files -q '.files | map(.path | split ("/") | .[0] | select(startswith(".")|not)) | unique' )" 
 
   build:
     needs: [setup]
+    if: ${{ needs.setup.outputs.directory != '' }}
     strategy:
       matrix: 
         directory: ${{fromJSON(needs.setup.outputs.directory)}}

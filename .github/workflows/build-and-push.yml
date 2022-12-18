@@ -7,6 +7,10 @@ on:
         required: true
         type: string
         description: build docker image tag
+      version:
+        required: false
+        type: string
+        description: docker image tag version. default value is set from version file.
       context:
         required: true
         type: string
@@ -48,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ inputs.tag }}
+          tags: ${{ inputs.tag }}:${[ inputs.version || steps.outputs.version.value ]}
           context: ${{ inputs.context }}
           build-args: |
             VERSION=${{steps.version.outputs.value}}

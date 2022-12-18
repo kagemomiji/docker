@@ -33,7 +33,8 @@ jobs:
     uses: ./.github/workflows/build-and-push.yml
     with:
       context: ${{matrix.directory}}
-      tag: ghcr.io/${{github.repository_owner}}/${{matrix.directory}}:pr-${{github.event.pull_request.number}}
+      tag: ghcr.io/${{github.repository_owner}}/${{matrix.directory}}
+      version: pr-${{github.event.pull_request.number}}
 
 
 

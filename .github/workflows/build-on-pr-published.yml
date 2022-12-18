@@ -18,7 +18,7 @@ jobs:
       - id: matrix
         name: set matrix
         env: 
-          GH_TOKEN: ${{ GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: | 
           echo "directory=$(gh pr view "${PR_NUMBER}" --json files -q '.files | map(.path | split ("/") | .[0] | select(startswith(".")|not)) | unique' )"

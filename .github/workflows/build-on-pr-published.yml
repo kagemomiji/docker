@@ -1,0 +1,38 @@
+name: Build image at PR published
+on:
+  pull_request:
+    branches: 
+      - main
+    paths:
+      - "n8n/**"
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      directory: ${{steps.matrix.outputs.directory}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - id: matrix
+        name: set matrix
+        env: 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: | 
+          echo "directory=$(gh pr view "${PR_NUMBER}" --json files -q '.files | map(.path | split ("/") | .[0] | select(startswith(".")|not)) | unique' )"  >> $GITHUB_OUTPUT
+      
+
+  build:
+    needs: [setup]
+    if: ${{ needs.setup.outputs.directory != '' }}
+    strategy:
+      matrix: 
+        directory: ${{fromJSON(needs.setup.outputs.directory)}}
+    uses: ./.github/workflows/build-and-push.yml
+    with:
+      context: ${{matrix.directory}}
+      tag: ghcr.io/${{github.repository_owner}}/${{matrix.directory}}
+      version: pr-${{github.event.pull_request.number}}
+      

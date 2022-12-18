@@ -52,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ inputs.tag }}:${[ inputs.version || steps.outputs.version.value ]}
+          tags: ${{ inputs.tag }}:${{ inputs.version || steps.outputs.version.value }}
           context: ${{ inputs.context }}
           build-args: |
             VERSION=${{steps.version.outputs.value}}

@@ -38,9 +38,9 @@ jobs:
       matrix: 
         directory: ${{fromJSON(needs.setup.outputs.directory)}}
     uses: ./.github/workflows/build-and-push.yml
+    secrets: inherit
     with:
       context: ${{matrix.directory}}
-      secrets: inherit
       tag: ghcr.io/${{github.repository_owner}}/${{matrix.directory}}
       version: pr-${{github.event.pull_request.number}}
       

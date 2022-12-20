@@ -15,11 +15,6 @@ on:
         required: true
         type: string
         description: build context
-    secrets:
-      APP_ID: 
-        required: true
-      APP_PRIVATE_KEY: 
-        required: true
     
 defaults:
   run:

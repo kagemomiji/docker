@@ -16,17 +16,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Generate token
-        id: generate_token
-        uses: tibdex/github-app-token@v1
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - id: matrix
         name: set matrix
         env: 
-          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: | 
           echo "directory=$(gh pr view "${PR_NUMBER}" --json files -q '.files | map(.path | split ("/") | .[0] | select(startswith(".")|not)) | unique' )"  >> $GITHUB_OUTPUT

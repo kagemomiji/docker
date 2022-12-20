@@ -40,13 +40,15 @@ jobs:
       - name: version
         id: version
         working-directory: ${{ inputs.context }}
+        env: 
+          IMAGE: ${{inputs.context}}
         run: |
-          if [ ! -f "version" ]; then
+          if [ ! -f "Dockerfile" ]; then
             echo $(pwd)
-            echo "Not found version file"
+            echo "Not found Dockerfile"
             exit 1;
           fi
-          echo "value=$(cat version)" >> $GITHUB_OUTPUT
+          echo "value=$(sed -n -e "s/^FROM.*$IMAGE:\(.*\)$/\1/p" Dockerfile)" >> $GITHUB_OUTPUT
 
       - name: tag
         id: tag

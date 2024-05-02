@@ -1,4 +1,4 @@
-FROM n8nio/n8n:1.33.1
+FROM n8nio/n8n:1.39.1
 LABEL org.opencontainers.image.source=https://github.com/kagemomiji/docker
 LABEL org.opencontainers.image.description="Custom n8n image"
 USER root
